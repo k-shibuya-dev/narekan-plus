@@ -145,7 +145,10 @@
       });
       form.insertAdjacentElement("afterend", tabs);
     }
-    tabs.querySelector(".cnt").textContent = favs.length ? `(${favs.length})` : "";
+    // 値が変わったときだけ書く（同じ値でもtextContent代入はDOM変更として検知され、refreshが循環するため）
+    const cnt = tabs.querySelector(".cnt");
+    const cntText = favs.length ? `(${favs.length})` : "";
+    if (cnt.textContent !== cntText) cnt.textContent = cntText;
     tabs.querySelectorAll("button").forEach((b) =>
       b.classList.toggle("active", (b.dataset.tab === "fav") === favMode)
     );
